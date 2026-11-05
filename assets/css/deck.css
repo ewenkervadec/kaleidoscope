@@ -1,0 +1,218 @@
+/* Chimioarchitecture des psychédéliques — système visuel (3/5) : projection (scène 1600 × 900), présentateur.
+   Le spectre rose → bordeaux court d’un bout à l’autre : la couverture va de l’aubergine au rose ; chaque chapitre a sa
+   tranche (aplat des diapositives de chapitre, voile et pastille des diapositives de contenu) ; titres en dégradé. */
+
+.deck{position:fixed;inset:0;z-index:100;background:#0B0509;overflow:hidden;outline:none}
+.deck .stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+.slide{position:absolute;inset:0;overflow:hidden;isolation:isolate;background:var(--paper);color:var(--ink);padding:58px 96px 76px;display:flex;flex-direction:column;gap:22px}
+.slide::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:20;opacity:calc(var(--grain) * 1.1);mix-blend-mode:var(--grain-blend);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .45  0 0 0 0 .42  0 0 0 1.4 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.slide:not(.k-cover):not(.k-section):not(.k-pause):not(.k-qr):not(.k-thanks){background:
+  radial-gradient(1000px 660px at 104% -12%, color-mix(in srgb, var(--c1) var(--wash-a), transparent), transparent 72%),
+  radial-gradient(880px 580px at -8% 112%, color-mix(in srgb, var(--c3) var(--wash-b), transparent), transparent 72%),var(--paper)}
+.slide .s-head > span:first-child:not(:empty){display:inline-flex;align-items:center;gap:11px;color:var(--lead);letter-spacing:.2em}
+.slide .s-head > span:first-child:not(:empty)::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--g-pill);box-shadow:0 0 0 3px color-mix(in srgb, var(--c1) 22%, transparent)}
+.slide .s-head{display:flex;justify-content:space-between;align-items:center;gap:20px;font-family:var(--f-mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--lead);min-height:22px}
+.slide h2.s-t{margin:0;font-family:var(--f-display);font-weight:700;font-size:54px;line-height:1.02;letter-spacing:-.022em;text-wrap:balance;max-width:27em}
+.slide .s-body{flex:1;min-height:0;font-size:var(--fs,27px);overflow:hidden;display:flex;flex-direction:column}
+.slide .s-body > .blk{gap:.7em;flex:1;min-height:0}
+.slide .s-body > .blk > *{flex-shrink:0}
+.slide .s-body > .blk > .viz{flex-shrink:1}
+.slide .tbl{font-size:.94em}
+.slide .tbl td,.slide .tbl th{padding:.42em .6em}
+.slide .blk p{font-size:1.04em;line-height:1.45}
+.slide .blk p.lead{font-size:1.25em;line-height:1.3}
+.slide .s-foot{position:absolute;left:96px;right:96px;bottom:26px;display:grid;grid-template-columns:1fr 2fr 1fr;gap:24px;font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--lead)}
+.slide .s-foot span:nth-child(2){text-align:center;letter-spacing:.08em;text-transform:none;font-size:12px}
+.slide .s-foot span:nth-child(3){text-align:right}
+.deck [data-f]{transition:opacity .28s, filter .28s, transform .28s}
+.deck .stage.no-tr *,.deck .stage.no-tr *::before,.deck .stage.no-tr *::after{transition:none!important}
+.deck [data-f]:not(.on){opacity:0;filter:blur(6px);pointer-events:none}
+.deck .vstep{display:none}
+.deck .ov-item [data-f]{transition:none}
+@media (prefers-reduced-motion:reduce){.deck [data-f]{transition:none}}
+
+/* Couverture : le dégradé de la série, de l’aubergine (sous le titre) au rose (sous l’image) ; l’image dans une porte
+   en plein cintre (« les portes de la perception »), un anneau en pointillé, un disque ; le titre en Compu, blanc puis rose */
+.slide.k-cover{padding:0;background:var(--g-cover);color:#fff}
+.slide.k-cover .cover-full{position:absolute;inset:0;isolation:isolate}
+.slide.k-cover .cv-glow{position:absolute;z-index:-1;right:-270px;top:-90px;width:1080px;height:1080px;border-radius:50%;background:radial-gradient(circle, rgb(255 142 196 / .52) 0%, rgb(254 60 111 / .2) 42%, transparent 70%)}
+.slide.k-cover .cv-ring{position:absolute;border-radius:50%;pointer-events:none}
+/* la couverture : un médaillon (la figure dans un cercle), un anneau concentrique et une petite sphère qui le chevauche,
+   comme sur les diapositives de chapitre */
+.slide.k-cover .r1{width:716px;height:716px;left:877px;top:92px;border:1.5px dashed rgb(255 255 255 / .42)}
+/* la petite sphère reprend la teinte du disque des portraits (Hofmann, Huxley…) : rose clair, cœur rose, bord framboise */
+.slide.k-cover .r2{z-index:2;width:180px;height:180px;left:866px;top:606px;background:radial-gradient(circle at 34% 28%, #FFE4EE 0%, #FF9DBE 46%, #E23064 100%);box-shadow:0 30px 60px -28px rgb(20 0 12 / .6)}
+.slide.k-cover .cv-frame{position:absolute;z-index:1;margin:0;left:925px;top:140px;width:620px;height:620px;border-radius:50%;overflow:hidden;background:#CDAFB4;box-shadow:0 50px 100px -44px rgb(20 0 12 / .9), 0 0 0 1px rgb(255 255 255 / .16)}
+.slide.k-cover .cv-frame .cv-ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.slide.k-cover .cv-scrim{display:none}
+.slide.k-cover .cv-top{position:absolute;left:96px;right:96px;top:52px;display:flex;justify-content:space-between;gap:30px;font-family:var(--f-mono);font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:rgb(255 255 255 / .8);z-index:2}
+.slide.k-cover .cv-txt{position:absolute;left:92px;width:850px;top:50%;transform:translateY(-44%);display:flex;flex-direction:column;gap:26px;z-index:2}
+.slide.k-cover .cv-eb{font-family:var(--f-mono);font-size:15px;letter-spacing:.24em;text-transform:uppercase;color:#FFCADB}
+.slide.k-cover .cv-title{margin:0;font-family:var(--f-title);font-weight:400;font-size:100px;line-height:.98;letter-spacing:-.012em;color:#fff}
+.slide.k-cover .cv-title .t2{background:linear-gradient(100deg, #FFE2EB 0%, #FFB3CD 48%, #FF8EC4 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slide.k-cover .cv-sub{margin:0;font-family:var(--f-ui);font-size:32px;font-weight:500;line-height:1.3;color:rgb(255 255 255 / .94);white-space:nowrap}
+.slide.k-cover .cv-cr{position:absolute;right:96px;bottom:34px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:rgb(255 255 255 / .6);text-transform:uppercase;z-index:2}
+.slide.k-cover .s-foot{display:none}
+.slide.k-cover::after{mix-blend-mode:soft-light;opacity:.26}
+
+/* Chapitre : l’aplat de sa tranche du spectre (blanc ≥ 3:1 partout pour les grands titres), trois disques, l’emblème blanc */
+.slide.k-section{background:radial-gradient(64% 86% at 86% 34%, rgb(255 255 255 / .16), transparent 64%),var(--g-ch);color:#fff;padding:58px 96px 76px}
+.slide.k-section::after{mix-blend-mode:soft-light;opacity:.22}
+.slide.k-section .night{display:none}
+.slide.k-section .sec-in{position:relative;z-index:2;flex:1;display:grid;grid-template-columns:minmax(0,1fr) 470px;align-items:stretch;gap:40px}
+.slide.k-section .sec-txt{display:flex;flex-direction:column;justify-content:center;gap:20px}
+.slide.k-section .sec-art{position:relative;--cx:calc(50% + 128px);--cy:calc(50% - 13px)}
+.slide.k-section .disc{position:absolute;border-radius:50%;pointer-events:none}
+.slide.k-section .d1{width:640px;height:640px;left:var(--cx);top:var(--cy);transform:translate(-50%,-50%);background:radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--c1) 26%, #fff) 0%, color-mix(in srgb, var(--c1) 52%, #fff) 38%, color-mix(in srgb, var(--c1) 82%, #fff) 78%, var(--c1) 100%);box-shadow:0 40px 90px -40px color-mix(in srgb, var(--c3) 70%, #000)}
+.slide.k-section .d2{width:230px;height:230px;left:2%;bottom:-6%;background:radial-gradient(circle at 40% 35%, var(--c2), var(--c3) 80%);box-shadow:0 30px 60px -30px rgb(20 0 12 / .45)}
+/* l’emblème blanc se détache sur un disque profond, au cœur de la sphère claire ; l’orbite en pointillé l’entoure */
+.slide.k-section .d3{width:440px;height:440px;left:var(--cx);top:var(--cy);transform:translate(-50%,-50%);background:radial-gradient(circle at 36% 30%, color-mix(in srgb, var(--c2) 80%, #fff) 0%, var(--c2) 44%, var(--c3) 100%);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .26), 0 34px 70px -34px rgb(20 0 12 / .55);outline:2px dashed rgb(255 255 255 / .72);outline-offset:18px}
+.slide.k-section .sec-art .emblem{position:absolute;z-index:1;left:var(--cx);top:var(--cy);width:300px;height:300px;transform:translate(-50%,-50%);color:#fff;filter:drop-shadow(0 3px 8px rgb(20 0 12 / .35))}
+.slide.k-section .sec-art .emblem :is(path,line,polyline,polygon,rect,ellipse),.slide.k-section .sec-art .emblem circle[fill="none"]{stroke-width:3.6px}
+.slide.k-section .sec-art .emblem [stroke-dasharray]{stroke-dasharray:0.1 9}
+.slide.k-section .sec-art .emblem circle:not([fill="none"]){stroke:currentColor;stroke-width:1.6px}
+.slide.k-section .s-sec-n{align-self:flex-start;padding:8px 17px;border-radius:999px;background:rgb(46 5 38 / .36);font-size:15px;letter-spacing:.24em;text-transform:uppercase;color:#fff}
+.slide.k-section h2.s-t{font-family:var(--f-title);font-weight:400;font-size:112px;line-height:.96;letter-spacing:-.01em;color:#fff;background:none;max-width:8.6em;text-wrap:balance}
+.slide.k-section .sub{font-family:var(--f-ui);font-weight:500;font-size:30px;line-height:1.34;color:#fff;white-space:nowrap;overflow:hidden}
+.slide.k-section .blk{font-size:24px;color:#fff}
+.slide.k-section .s-foot{color:rgb(255 255 255 / .9)}
+
+/* Pause : tout le spectre en diagonale, un disque clair */
+.slide.k-pause{background:radial-gradient(56% 76% at 80% 50%, rgb(255 142 196 / .42), transparent 70%),linear-gradient(125deg, #FF4F86 0%, #E01C50 28%, #B3124A 52%, #7A0C35 78%, #520742 100%);color:#fff}
+.slide.k-pause::before{content:"";position:absolute;right:-120px;top:90px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle at 34% 30%, #FFB3D1 0%, #FF8DB8 38%, #FD5A8E 78%);z-index:-1}
+.slide.k-pause::after{mix-blend-mode:soft-light;opacity:.22}
+.slide.k-pause .s-head,.slide.k-pause .s-foot{color:rgb(255 255 255 / .9)}
+.slide.k-pause .s-head > span:first-child:not(:empty){color:rgb(255 255 255 / .86)}
+.slide.k-pause .s-head > span:first-child:not(:empty)::before{background:#fff;box-shadow:0 0 0 3px rgb(255 255 255 / .25)}
+.slide.k-pause h2.s-t{font-family:var(--f-title);font-weight:400;font-size:120px;color:#fff;background:none;letter-spacing:-.01em;margin-top:120px}
+.slide.k-pause .s-body{max-width:760px}
+.slide.k-pause .blk p{font-family:var(--f-ui);font-size:28px;font-weight:500;color:#fff}
+.slide.k-pause .qr-txt b{color:#fff}
+.slide.k-pause .qr-url,.slide.k-pause .eyebrow{color:rgb(255 255 255 / .88)}
+/* Question à la salle : un disque de la tranche en coin, en rappel des chapitres */
+.slide.k-question h2.s-t{font-size:46px}
+.slide.k-question::before{content:"";position:absolute;z-index:-1;right:-220px;top:-260px;width:640px;height:640px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 40% 60%, color-mix(in srgb, var(--c1) 58%, transparent), color-mix(in srgb, var(--c2) 24%, transparent) 55%, transparent 72%)}
+
+/* Après le cours : les codes QR sur fond de nuit prune, halo rose */
+.slide.k-qr{color:var(--night-ink);background:radial-gradient(54% 66% at 50% 70%, rgb(254 60 111 / .46), rgb(176 23 79 / .26) 46%, transparent 76%),linear-gradient(160deg, #2E0526 0%, #45063A 50%, #6E0F45 100%)}
+.slide.k-qr::after{mix-blend-mode:screen;opacity:.09}
+.slide.k-qr .s-head,.slide.k-qr .s-foot{color:var(--night-lead)}
+.slide.k-qr h2.s-t{color:#fff;background:none;font-size:64px;font-weight:800;letter-spacing:-.028em}
+.slide.k-qr .s-body > .blk{justify-content:center;padding-bottom:40px}
+.slide.k-qr .qrs{grid-template-columns:repeat(4,minmax(0,1fr));gap:30px;align-items:stretch}
+.slide.k-qr .qrc{background:#F8F5F1;color:#1F151B;border-radius:24px;padding:24px 24px 22px;align-items:center;text-align:center;gap:.4em;
+  box-shadow:0 0 0 1px rgb(255 255 255 / .1), 0 34px 70px -34px rgb(254 60 111 / .8)}
+.slide.k-qr .qrc .qr{max-width:238px;margin-bottom:.25em}
+.slide.k-qr .qrc .eyebrow{color:#B3124A;font-size:15px}
+.slide.k-qr .qrc b{font-family:var(--f-ui);font-weight:500;font-size:22px;line-height:1.25;color:#1F151B}
+
+.deck-bar{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px max(14px, env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px, env(safe-area-inset-left,0px));background:linear-gradient(to top, rgb(0 0 0 / .6), transparent);color:#EEEEE8;opacity:0;transition:opacity .2s;font-size:14px;z-index:8}
+.deck.show-bar .deck-bar,.deck-bar:focus-within,.deck.touch .deck-bar{opacity:1}
+.deck:not(.show-bar):not(.touch){cursor:none}
+.deck-bar button{min-height:40px;padding:0 14px;border:0;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .25);border-radius:20px;background:rgb(0 0 0 / .4);color:#EEEEE8;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:var(--f-ui)}
+.deck-bar button:hover{background:rgb(0 0 0 / .65)}
+.deck-bar .grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.deck-bar .cnt{font-family:var(--f-mono);font-size:13px;min-width:7ch;text-align:center;letter-spacing:.08em}
+.deck-prog{position:absolute;left:0;top:0;height:4px;background:var(--g-spectre) 0 0 / 100vw 100% no-repeat;transition:width .2s;z-index:8}
+.deck-black{position:absolute;inset:0;background:#000;z-index:9}
+.deck-notes{position:absolute;left:50%;transform:translateX(-50%);bottom:70px;width:min(920px,92vw);max-height:42vh;overflow:auto;background:rgb(20 8 15 / .95);color:#F2E8EC;border-radius:16px;padding:16px 20px;font-size:16px;line-height:1.55;z-index:9;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .12)}
+.deck-notes > b{display:block;font-family:var(--f-mono);font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#A9ACA2;margin-bottom:4px}
+.overview{position:absolute;inset:0;z-index:10;background:rgb(14 6 11 / .97);overflow:auto;padding:28px}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.ov-item{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:0;box-shadow:0 0 0 2px transparent;cursor:pointer;background:var(--paper);padding:0}
+.ov-item.cur{box-shadow:0 0 0 3px var(--acc-fill)}
+.ov-item:hover{box-shadow:0 0 0 2px rgb(255 255 255 / .5)}
+.ov-item .ov-in{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;pointer-events:none}
+.ov-item .ov-n{position:absolute;left:8px;bottom:6px;z-index:30;font-family:var(--f-mono);font-size:12px;background:rgb(0 0 0 / .65);color:#fff;padding:1px 7px;border-radius:6px}
+.deck .pop{font-size:17px}
+.deck .stack.open{position:fixed;top:0;right:0;bottom:0;left:auto;width:min(480px,100vw);max-height:none;z-index:110;background:var(--paper);padding:16px;overflow:auto;box-shadow:var(--shadow);display:flex}
+.deck .stack:not(.open){display:none}
+.deck .stack .sheet-back{display:inline-flex}
+.deck .stack .spines,.deck .stack .pane-host{display:block}
+.deck .stack .stack-empty{display:none}
+
+/* Vue présentateur */
+.presenter{position:fixed;inset:0;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(330px,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:14px;padding:14px;background:#0B0509;color:#F2E8EC;font-family:var(--f-ui)}
+.pv-top{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:15px;flex-wrap:wrap}
+.pv-top .clock{font-family:var(--f-mono);font-size:28px;letter-spacing:.04em}
+.pv-plan{font-family:var(--f-mono);font-size:13px;letter-spacing:.08em;color:#A9ACA2}
+.pv-cur,.pv-next{position:relative;background:#000;border-radius:10px;overflow:hidden}
+.pv-cur{grid-row:2 / 4}
+.pv-side{display:flex;flex-direction:column;gap:12px;min-height:0}
+.pv-next{aspect-ratio:16/9;flex-shrink:0}
+.pv-frame{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+.pv-end{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-mono);font-size:60px;letter-spacing:.3em;color:#A9ACA2}
+.pv-notes{flex:1;min-height:0;overflow:auto;background:#1A0D15;border-radius:10px;padding:14px 18px;font-size:19px;line-height:1.55}
+.pv-notes > b{font-family:var(--f-mono);font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#A9ACA2}
+.pv-notes .dim{color:#7B7F75}
+.pv-ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.pv-ctrl button{min-height:44px;padding:0 18px;border:0;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .2);border-radius:22px;background:#24131D;color:#F2E8EC;cursor:pointer;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.pv-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#A9ACA2;margin-bottom:6px}
+
+/* mesure de l’ajustement : les éléments révélés plus tard comptent dans la hauteur */
+.fit-measure .v-ans[hidden],.fit-measure .v-hold[hidden]{display:block!important}
+
+/* notes : le texte de la version lecture, à dire à l’oral */
+.nt-read{margin-top:12px;padding-top:10px;border-top:1px solid rgb(255 255 255 / .16);display:flex;flex-direction:column;gap:6px;color:#E9DCE2}
+.nt-read .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#FF9DBE}
+.nt-read p,.nt-read ul,.nt-read ol{margin:0}
+.nt-read ul,.nt-read ol{padding-left:1.2em}
+.nt-read li{margin:2px 0}
+.nt-read b,.nt-read strong{color:#fff;font-weight:600}
+.nt-read .tbl-box{overflow:auto}
+.nt-read table{border-collapse:collapse;font-size:.9em}
+.nt-read th,.nt-read td{border-bottom:1px solid rgb(255 255 255 / .12);padding:3px 8px 3px 0;text-align:left;vertical-align:top;color:inherit}
+.nt-read .src,.nt-read .call i,.nt-read .col-tag{color:#B9A9B1;font-size:.85em}
+/* un encadré repris dans les notes : sans son fond clair, lisible sur le panneau sombre */
+.nt-read .call{display:flex;flex-direction:column;gap:2px;background:none;box-shadow:none;padding:0;border-radius:0}
+.nt-read .call > i{color:#B9A9B1;min-width:0;padding:0}
+.nt-read .call > span{color:#E9DCE2}
+.nt-read a{color:#FF9DBE}
+
+/* ——— Remerciements : « Merci » en Compu, un kaléidoscope qui tourne ——— */
+.slide.k-thanks{padding:0;background:var(--g-cover);color:#fff}
+.slide.k-thanks .s-foot{display:none}
+.slide.k-thanks .thx{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) 780px;align-items:center;gap:40px;padding:0 70px 0 104px;isolation:isolate}
+.slide.k-thanks .thx::before{content:"";position:absolute;z-index:-1;right:-170px;top:50%;width:1120px;height:1120px;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle, rgb(255 142 196 / .45) 0%, rgb(254 60 111 / .16) 46%, transparent 70%)}
+.slide.k-thanks .thx-txt{display:flex;flex-direction:column;gap:22px}
+.slide.k-thanks h2.s-t{font-family:var(--f-title);font-weight:400;font-size:190px;line-height:.9;letter-spacing:-.01em;color:#fff;background:none;-webkit-text-fill-color:#fff;margin:0}
+.slide.k-thanks .sub{font-family:var(--f-ui);font-size:32px;font-weight:500;color:rgb(255 255 255 / .94);white-space:nowrap}
+.slide.k-thanks .thx-who{font-size:14px;letter-spacing:.22em;text-transform:uppercase;color:#FFCADB;white-space:nowrap}
+.slide.k-thanks .thx-art{position:relative;width:780px;height:780px;display:grid;place-items:center}
+.slide.k-thanks .thx-art::after{content:"";position:absolute;inset:-26px;border-radius:50%;border:2px dashed rgb(255 255 255 / .55);pointer-events:none}
+.slide.k-thanks .thx-art .blk{width:100%;height:100%}
+.slide.k-thanks .thx-art .viz{width:100%;height:100%;margin:0}
+.ka{position:relative;width:100%;aspect-ratio:1;max-width:100%;margin-inline:auto}
+.ka-cv{display:block;border-radius:50%;filter:drop-shadow(0 40px 60px rgb(20 0 12 / .45))}
+.slide .ka{width:780px;height:780px}
+
+/* ——— Diapositive 13 : la vidéo en grand, trois mots ——— */
+.slide .vid.vid-big{margin:0;display:flex;flex-direction:column;gap:10px}
+.slide .vid.vid-big video{display:block;width:100%;aspect-ratio:16/9;height:auto;border-radius:22px;box-shadow:0 34px 70px -34px rgb(20 0 12 / .7);background:#2E0526}
+.slide .vid.vid-big figcaption{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lead)}
+.slide .cols.xp-words{grid-template-columns:minmax(0,1fr)!important;gap:18px}
+.slide .cols.xp-words .col{padding:22px 24px;min-height:0}
+.slide .cols.xp-words .col-h{font-size:30px;line-height:1.1}
+
+/* notes : les étapes d’un schéma */
+.nt-steps{margin:0;padding-left:1.3em}
+.nt-steps li{margin:3px 0}
+
+/* ——— Notes de l’enseignant protégées : le mot de passe (lecture, projection, vue présentateur) ——— */
+.nlock{display:flex;flex-direction:column;gap:8px;margin:0}
+.nlock > b{font-family:var(--f-mono);font-weight:400;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.nlock-row{display:flex;flex-wrap:wrap;gap:8px}
+.nlock input{flex:1 1 150px;min-width:0;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:15px}
+.nlock input:focus-visible{outline:2px solid var(--acc-fill);outline-offset:2px}
+.nlock .btn{min-height:40px}
+.nlock-msg{margin:0;font-size:13px;line-height:1.35;color:var(--lead);min-height:1.35em}
+.deck-notes .nlock > b,.pv-notes .nlock > b{color:#A9ACA2}
+.deck-notes .nlock input,.pv-notes .nlock input{background:rgb(255 255 255 / .08);border-color:rgb(255 255 255 / .28);color:#fff}
+.deck-notes .nlock-msg,.pv-notes .nlock-msg{color:#D9C6CF}
+.nlock-off{margin:10px 0 0}
+.nlock-off button{background:none;border:0;padding:0;font:inherit;font-size:12.5px;color:inherit;opacity:.72;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.nlock-off button:hover{opacity:1}
+#nlockSlot:empty{display:none}
+#nlockSlot{padding:4px 2px 2px}
